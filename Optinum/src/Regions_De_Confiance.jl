@@ -50,6 +50,9 @@ options = []
 xmin, fxmin, flag,nb_iters = Regions_De_Confiance(algo,f,gradf,hessf,x0,options)
 ```
 """
+
+include("Pas_De_Cauchy.jl")
+
 function Regions_De_Confiance(algo,f::Function,gradf::Function,hessf::Function,x0,options)
 
     if options == []
@@ -73,12 +76,58 @@ function Regions_De_Confiance(algo,f::Function,gradf::Function,hessf::Function,x
         Tol_abs = options[8]
         Tol_rel = options[9]
     end
-
-    n = length(x0)
-    xmin = zeros(n)
-    fxmin = f(xmin)
-    flag = 0
+    
+    x_k = x0
     nb_iters = 0
-
-    return xmin, fxmin, flag, nb_iters
+    delta_k = delta0
+    for k in 1:max_iter
+        
+        #Calculer s_k suivant la méthode choisie
+        if algo == "cauchy"
+            s_k, _ = Pas_De_Cauchy(gradf(x_k), hessf(x_k), delta_k)
+        elseif algo == "gct"
+            s_k = Pas_De_Cauchy(gradf(x_k), hessf(x_k), [delta_k, max_iter, Tol_abs])
+        end
+        
+        #Traiter les flags
+        if norm(gradf(x_k+s_k),2) <= max(norm(gradf(x0),2)*Tol_rel,Tol_abs)
+            flag = 0
+            break
+        elseif norm(s_k,2) <= max(norm(x_k,2)*Tol_rel,Tol_abs)
+            flag = 1
+            break
+        elseif abs(f(x_k+s_k)-f(x_k)) <= max(f(x_k)*Tol_rel,Tol_abs)
+            flag = 2
+            break
+        end
+        
+        #Calculer le modèle
+        function m(s)
+            Symmetric(gradf(x_k))*(s-x_k) + 1/2*Symmetric(s-x_k)*hessf(x_k)*(s-x_k)
+        end
+        
+        #Calculer rho_k
+        rho_k = (f(x_k) - f(x_k+s_k))/(m(x_k) - m(x_k+m_k))
+        
+        #Modifier x_k
+        if rho_k >= etat1
+            x_k += s_k
+        end
+        
+        #Modifier delta_k
+        if rho_k > etat2
+            delta_k = min(gamma2*delta_k, deltaMax)
+        elseif rho_k<etat1
+            delta_k = gamma1*delta_k
+        end
+        
+        nb_iters += 1
+    end
+    if nb_iters == max_iter
+        flag = 3
+    end
+    xmin = x_k
+    f_min = f(x_k)
+    return xmin,f_min,flag,nb_iters
+    
 end

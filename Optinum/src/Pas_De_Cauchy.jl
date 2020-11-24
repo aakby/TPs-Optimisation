@@ -38,5 +38,20 @@ function Pas_De_Cauchy(g,H,delta)
     n = length(g)
     s = zeros(n)
     
+    function q(s)
+        Symmetric(s)*g + 1/2*Symmetric(s)*H*s
+    end
+    
+    normg = norm(g);
+    b = -norm(g)^2;
+    lambda = -b/(2*a);
+    borneSup = delta/normg;
+
+    if ((a>0 && lambda > borneSup) || (a<=0))
+       lambda = borneSup;      
+    end
+
+    s = -lambda * g ;
+
     return s, e
 end
