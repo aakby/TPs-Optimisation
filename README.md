@@ -6,21 +6,9 @@ La première partie de ce TP-projet concerne les problèmes d’optimisation san
 
 Dans cette partie, on s’intéresse à la résolution du problème
 
-\min _{x \in \mathbb{R}^{n}} f(x)min 
+min 
 x∈R 
 n
  
 ​	
  f(x)
-
-où la fonction ff est de classe C^{2}C 
-2
-  sur R^{n}R 
-n
-  . On cherche donc à exploiter l’information fournie par ses dérivées première et seconde, que l’on représente en tout point x par le vecteur gradient \nabla f (x) \in R^{n}∇f(x)∈R 
-n
-  et la matrice Hessienne \nabla^{2} f (x) \in R^{n\times n}∇ 
-2
- f(x)∈R 
-n×n
- .}
