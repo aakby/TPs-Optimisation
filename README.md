@@ -4,6 +4,15 @@ La première partie de ce TP-projet concerne les problèmes d’optimisation san
 
 # Optimisation sans contraintes
 
-Dans cette partie, on s’intéresse à la résolution du problème
+Dans cette partie, on s’intéresse à la résolution du problème min x∈R^n f(x), où la fonction f est de classe C² sur R^n.
+On cherche donc à exploiter l’information fournie par ses dérivées première et seconde, que l’on représente en tout point x par le vecteur gradient et la matrice Hessienne.
 
-min x∈R^n f(x)
+1) Algorithme de Newton local
+
+2) La méthode des régions de confiance
+
+# Optimisation avec contraintes
+
+Dans cette partie, nous nous intéressons à la résolution des problèmes sous contraintes. Le problème se présente donc sous la forme suivante : min x∈R^n f(x) sous la contrainte x appartient à C. où C est un sous-ensemble non vide de R^n.
+
+3) Lagrangien Augmenté
