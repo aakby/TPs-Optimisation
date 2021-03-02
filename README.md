@@ -6,9 +6,4 @@ La première partie de ce TP-projet concerne les problèmes d’optimisation san
 
 Dans cette partie, on s’intéresse à la résolution du problème
 
-min 
-x∈R 
-n
- 
-​	
- f(x)
+min x∈R^n f(x)
